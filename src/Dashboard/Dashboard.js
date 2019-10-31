@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import AddPetForm from './AddPetForm';
-import Table from './Table';
+import PetTable from './PetTable';
 
 class Dashboard extends Component {
     render(){
         return(
             <>
                 <AddPetForm />
-                <Table />
+                <PetTable />
             </>
         )
     }
