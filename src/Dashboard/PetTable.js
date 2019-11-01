@@ -10,10 +10,17 @@ class PetTable extends Component {
     }
 
     componentDidMount(){
+        this.getPets();
+    }
+
+    getPets = () => {
         axios.get('http://127.0.0.1:5000/pets')
             .then((response) => {
                 console.log(response.data)
-                this.setState({pets: response.data})
+                this.setState({ pets: response.data })
+            })
+            .catch(error => {
+                console.log('Error getting pets', error);
             })
     }
 
@@ -21,9 +28,29 @@ class PetTable extends Component {
         return (
             this.state.pets.map(item =>
                 <TableRow key={item[0]}>
-                    <TableItem item={item} />
+                    <TableItem item={item} handleCheckin={this.handleCheckin} handleDelete={this.handleDelete} />
                 </TableRow>)
         )
+    }
+
+    handleCheckin = (id) => {
+        axios.put(`http://127.0.0.1:5000/pets/checkin/`, {"id": id})
+            .then(() => {
+                this.getPets();
+            })
+            .catch(error => {
+                console.log('Error in check-in', error);
+            })
+    }
+
+    handleDelete = (id) => {
+        axios.delete(`http://127.0.0.1:5000/pets/remove/?id=${id}`)
+            .then(() => {
+                this.getPets();
+            })
+            .catch(error => {
+                console.log('Error in delete', error);
+            })
     }
 
     render() {
